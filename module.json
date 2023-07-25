@@ -1,0 +1,72 @@
+{
+  "id": "token-action-hud-uft",
+  "title": "Token Action HUD for UFT Systems",
+  "description": "Adds support for Token Action HUD to systems built with the Universal Fantasy Toolkit",
+  "authors": [
+    {
+      "name": "wyrmisis",
+      "url": "https://github.com/wyrmisis"
+    }
+  ],
+  "url": "This is auto replaced",
+  "flags": {},
+  "version": "This is auto replaced",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11.300"
+  },
+  "esmodules": [
+    "./scripts/init.js"
+  ],
+  "scripts": [
+  ],
+  "styles": [
+    "./styles/tah-uft.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "languages/en.json"
+    }
+  ],
+  "packs": [],
+  "relationships": {
+    "systems": [
+      {
+        "id": "ose",
+        "type": "system",
+        "compatibility": [
+          {
+            "minimum": "1.0.0",
+            "verified": "1.0.0"
+          }
+        ]
+      }
+    ],
+    "requires": [
+      {
+        "id": "token-action-hud-core",
+        "type": "module",
+        "compatibility": [
+          {
+            "minimum": "1.4.7",
+            "maximum": "1.4.9",
+            "verified": "1.4.9"
+          }
+        ]
+      }
+    ],
+    "optional": [],
+    "flags": {
+      "optional": []
+    }
+  },
+  "socket": false,
+  "manifest": "This is auto replaced",
+  "download": "This is auto replaced",
+  "readme": "https://github.com/Larkinabout/fvtt-token-action-hud-template#readme",
+  "protected": false,
+  "coreTranslation": false,
+  "library": false
+}

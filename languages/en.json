@@ -1,0 +1,35 @@
+{
+  "tokenActionHud": {
+    "uft": {
+      "inventory": {
+        "label": "Inventory",
+        "weapons": "Weapons",
+        "armor": "Armor",
+        "containers": "Containers",
+        "items": "Item",
+        "treasure": "Treasure"
+      },
+      "spells": {
+        "label": "Spells",
+        "level": "Level {level}"
+      },
+      "abilities": {
+        "label": "Abilities",
+        "exploration": "Exploration Skills",
+        "rollable": "Rollable Skills",
+        "misc": "Other Skills"
+      },
+      "checks": {
+        "label": "Checks and Saves",
+        "saves": "Saving Throws",
+        "abilitychecks": "Ability Checks"  
+      },
+      "settings": {
+        "displayUnequipped": {
+          "hint": "Choose whether to display unequipped items on the HUD",
+          "name": "Display Unequipped"
+        }
+      }
+    }
+  }
+}

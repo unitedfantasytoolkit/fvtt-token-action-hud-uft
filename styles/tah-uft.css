@@ -1,0 +1,11 @@
+[value^="spells_"]:has([class^="tah-info"]) .tah-button-content {
+  display: flex;
+  gap: var(--tah-gap);
+  padding: 0 10px;
+}
+
+[value^="spells_"]:has([class^="tah-info"]) .tah-button-content .tah-button-text {
+  padding: 0;
+}
+[value^="spells_"]:has([class^="tah-info"]) .tah-button-content [class^="tah-info"] {
+}
