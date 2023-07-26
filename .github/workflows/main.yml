@@ -32,6 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x, 20.x]
   
     steps:
       - name: Checkout Repository
@@ -64,6 +67,12 @@ jobs:
           URL: ${{ env.project_url }}
           MANIFEST: ${{ env.latest_manifest_url }}
           DOWNLOAD: ${{ env.release_module_url }}
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm run build --if-present
 
       # Create a "module.zip" archive containing all the module's required files.
       # If you have other directories or files that will need to be added to
