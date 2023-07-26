@@ -2,6 +2,8 @@ import { terser } from 'rollup-plugin-terser'
 import multi from '@rollup/plugin-multi-entry'
 import livereload from 'rollup-plugin-livereload';
 
+const isWatchMode = !!process.env.ROLLUP_WATCH;
+
 export default [
   {
     input: {
@@ -19,7 +21,7 @@ export default [
     plugins: [
       terser({ keep_classnames: true, keep_fnames: true }),
       multi(),
-      livereload({
+      isWatchMode && livereload({
         port: 9999
       }),
     ]
