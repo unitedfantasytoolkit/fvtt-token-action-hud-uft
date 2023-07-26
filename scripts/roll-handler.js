@@ -60,6 +60,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       case 'item':
         this.#handleItemAction(event, actor, actionId)
         break
+      case 'exploration':
+        actor.rollExploration(actionId)
+        break
       case 'abilitycheck':
         actor.rollCheck(actionId)
         break
