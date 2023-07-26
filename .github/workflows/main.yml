@@ -72,6 +72,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - run: npm i
       - run: npm run build --if-present
 
       # Create a "module.zip" archive containing all the module's required files.
