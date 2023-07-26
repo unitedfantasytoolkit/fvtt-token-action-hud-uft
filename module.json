@@ -8,9 +8,9 @@
       "url": "https://github.com/wyrmisis"
     }
   ],
-  "url": "#(URL)#",
+  "url": "#{URL}#",
   "flags": {},
-  "version": "#(VERSION#)",
+  "version": "#{VERSION#}#",
   "compatibility": {
     "minimum": "11",
     "verified": "11.300"
@@ -63,9 +63,9 @@
     }
   },
   "socket": false,
-  "manifest": "#(MANIFEST)#",
-  "download": "#(DOWNLOAD)#",
-  "readme": "https://github.com/Larkinabout/fvtt-token-action-hud-template#readme",
+  "manifest": "#{MANIFEST}#",
+  "download": "#{DOWNLOAD}#",
+  "readme": "https://github.com/unitedfantasytoolkit/fvtt-token-action-hud-uft#readme",
   "protected": false,
   "coreTranslation": false,
   "library": false
