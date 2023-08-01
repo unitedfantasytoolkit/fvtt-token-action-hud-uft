@@ -28,7 +28,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         return this.doRenderItem(this.actor, actionId)
       }
 
-      const knownCharacters = ['character']
+      const knownCharacters = ['character', 'monster']
 
       // If single actor is selected
       if (this.actor) {
@@ -61,17 +61,82 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         this.#handleItemAction(event, actor, actionId)
         break
       case 'exploration':
-        actor.rollExploration(actionId)
+        actor.rollExploration(actionId, {fastForward: !this.actor})
         break
       case 'abilitycheck':
-        actor.rollCheck(actionId)
+        actor.rollCheck(actionId, {fastForward: !this.actor})
         break
       case 'save':
-        actor.rollSave(actionId)
+        actor.rollSave(actionId, {fastForward: !this.actor})
         break
       case 'utility':
         this.#handleUtilityAction(token, actionId)
         break
+      case 'combat':
+        this.#handleWeaponlessAttackAction(actor, actionId)
+        break
+      case 'morale':
+        if (actionId === 'loyalty' && actor.type === 'character' && actor.system.retainer.enabled) {
+          this.#handleLoyalty(actor)
+        }
+        if (actionId === 'morale' && actor.type === 'monster') {
+          this.#handleMorale(actor)
+        }
+        break
+      case 'hp':
+        switch (actionId) {
+        case 'hp':
+          if (actor.type === 'monster') {
+            const d = Dialog.confirm({
+              title: game.i18n.localize("tokenActionHud.uft.utility.hp"),
+              content: `<p>${game.i18n.localize("tokenActionHud.uft.utility.hpConfirm")}</p>`,
+              yes: async () => {
+                await actor.rollHP()
+                const speaker = ChatMessage.getSpeaker({ actor });
+                ChatMessage.create({
+                  content: `<p>${game.i18n.localize("tokenActionHud.uft.utility.hpRolled")}</p>`,
+                  blind: true,
+                  speaker,
+                });
+              }
+            })
+          }
+          break
+        case 'hd':
+          if (actor.type === 'character') {
+            actor.rollHitDice()
+          }
+          break
+        }
+        break
+      }
+    }
+
+    #handleWeaponlessAttackAction(actor, type) {
+      if (type === 'equipped') {
+        actor.system.weapons
+          .filter(i => i.system.equipped)
+          .forEach(i => {
+            i.roll({skipDialog: true})
+          })
+      } else {
+        actor.targetAttack({roll: {}}, type, { skipDialog: false })
+      }
+    }
+
+    async #handleLoyalty(actor) {
+      this.#handleScary(actor, 'rollLoyalty')
+    }
+
+    async #handleMorale(actor) {
+      this.#handleScary(actor, 'rollMorale')
+    }
+
+    async #handleScary(actor, rollFnName) {
+      const rollOptions = { fastForward: true}
+      const roll = await actor[rollFnName](rollOptions)      
+      if (!actor.token.hasStatusEffect('fear') && roll.total > roll.data.roll.target) {
+        actor?.token.toggleActiveEffect(CONFIG.statusEffects.find(e => e.id === 'fear'))
       }
     }
 

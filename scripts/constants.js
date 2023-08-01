@@ -22,7 +22,8 @@ export const REQUIRED_CORE_MODULE_VERSION = '1.4'
  */
 export const ACTION_TYPE = {
   item: 'tokenActionHud.uft.item',
-  utility: 'tokenActionHud.utility'
+  utility: 'tokenActionHud.utility',
+  combat: 'tokenActionHud.uft.attack'
 }
 
 /**
@@ -38,9 +39,9 @@ export const GROUP = {
   // spells
   spells: { id: 'spells', name: 'tokenActionHud.uft.spells', type: 'system' },
   // abilities
-  explorationSkills: { id: 'exploration', name: 'tokenActionHud.uft.abilities.exploration', type: 'system' , nestId: 'abilities_exploration'},
-  rolledAbilities: { id: 'rolled', name: 'tokenActionHud.uft.abilities.rollable', type: 'system', nestId: 'abilities_rolled' },
-  miscAbilities: { id: 'misc', name: 'tokenActionHud.uft.abilities.misc', type: 'system', nestId: 'abilities_misc' },
+  explorationSkills: { id: 'exploration', name: 'tokenActionHud.uft.abilities.exploration', type: 'system'  },
+  rolledAbilities: { id: 'rolled', name: 'tokenActionHud.uft.abilities.rollable', type: 'system' },
+  miscAbilities: { id: 'misc', name: 'tokenActionHud.uft.abilities.misc', type: 'system' },
   // checks/saves
   abilitychecks: { id: 'abilitychecks', name: 'tokenActionHud.uft.checks.abilitychecks', type: 'system' },
   saves: { id: 'saves', name: 'tokenActionHud.uft.checks.saves', type: 'system' },

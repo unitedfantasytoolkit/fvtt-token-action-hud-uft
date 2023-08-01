@@ -19,11 +19,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         nestId: 'inventory',
         id: 'inventory',
         name: coreModule.api.Utils.i18n('tokenActionHud.uft.inventory.label'),
-        groups: [
-          { ...groups.weapons, nestId: 'inventory_weapons' },
-          { ...groups.armor, nestId: 'inventory_armor' },
-          { ...groups.items, nestId: 'inventory_items' },
-        ]
       },
       {
         nestId: 'abilities',
@@ -32,11 +27,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         settings: {
           style: "tab"
         },
-        groups: [
-          { ...groups.explorationSkills, nestId: 'abilities_exploration' },
-          { ...groups.rolledAbilities },
-          { ...groups.miscAbilities }
-        ]
       },
       {
         nestId: 'spells',
@@ -50,10 +40,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         settings: {
           style: "tab"
         },
-        groups: [
-          { ...groups.abilitychecks, nestId: 'checks_abilitychecks' },
-          { ...groups.saves, nestId: 'checks_saves' }
-        ]
       },
       {
         nestId: 'utility',

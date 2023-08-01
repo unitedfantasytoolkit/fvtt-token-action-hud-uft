@@ -1,6 +1,8 @@
 {
   "tokenActionHud": {
     "uft": {
+      "item": "Item",
+      "attack": "Attack",
       "inventory": {
         "label": "Inventory",
         "weapons": "Weapons",
@@ -23,6 +25,17 @@
         "label": "Checks and Saves",
         "saves": "Saving Throws",
         "abilitychecks": "Ability Checks"  
+      },
+      "utility": {
+        "melee": "Melee Attack",
+        "missile": "Missile Attack",
+        "withEquipped": "With Equipped Weapons",
+        "loyalty": "Loyalty",
+        "morale": "Morale",
+        "hp": "Roll monster HP",
+        "hpConfirm": "Are you sure you want to roll HP for the selected monsters? Any damage will be lost.",
+        "hpRolled": "Rolled HP for the selected monsters!",
+        "hd": "Roll character HD"
       },
       "settings": {
         "displayUnequipped": {
