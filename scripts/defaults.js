@@ -16,6 +16,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
   DEFAULTS = {
     layout: [
       {
+        nestId: 'routines',
+        id: 'routines',
+        name: coreModule.api.Utils.i18n('tokenActionHud.uft.routines.label'),
+      },
+      {
         nestId: 'inventory',
         id: 'inventory',
         name: coreModule.api.Utils.i18n('tokenActionHud.uft.inventory.label'),

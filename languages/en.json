@@ -3,6 +3,11 @@
     "uft": {
       "item": "Item",
       "attack": "Attack",
+      "routines": {
+        "label": "Attack Routines",
+        "doAll": "Perform all attacks",
+        "unassigned": "Unassigned"
+      },
       "inventory": {
         "label": "Inventory",
         "weapons": "Weapons",
@@ -24,7 +29,7 @@
       "checks": {
         "label": "Checks and Saves",
         "saves": "Saving Throws",
-        "abilitychecks": "Ability Checks"  
+        "abilitychecks": "Ability Checks"
       },
       "utility": {
         "melee": "Melee Attack",

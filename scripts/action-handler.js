@@ -15,7 +15,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @override
      * @param {array} groupIds
      */a
-    async buildSystemActions (groupIds) {
+    async buildSystemActions(groupIds) {
       // Set actor and token variables
       this.actorType = this.actor?.type
 
@@ -41,7 +41,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
     get actorsAreSameType() {
       if (this.actor) return true
-      
+
       const compareType = this.actors[0].type
       return this.actors.every(a => a.type === compareType)
     }
@@ -51,7 +51,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @private
      * @returns {object}
      */
-    #buildMultipleTokenActions () {
+    #buildMultipleTokenActions() {
       this.removeGroup({ id: "inventory" })
       this.removeGroup({ id: "abilities" })
       this.removeGroup({ id: "spells" })
@@ -63,17 +63,17 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         }
       } else {
         this.#buildMixedActorActions()
-      }      
+      }
     }
-    
+
     /**
      * Build character actions
      * @private
      */
-    #buildCharacterActions () {
+    #buildCharacterActions() {
       this.#buildItemList()
       this.#buildAbilityCheckList()
-      this.#buildExplorationSkilleList () 
+      this.#buildExplorationSkilleList()
       this.#buildSaveList()
       this.#buildAbilitiesList()
       this.#buildSpellsList()
@@ -81,7 +81,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       this.#buildMoraleActions()
       this.#buildHPActions()
 
-      this.updateGroup({ id: "abilities", settings: { style: 'tab' }})
+      this.updateGroup({ id: "abilities", settings: { style: 'tab' } })
     }
 
     /**
@@ -91,7 +91,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * @todo - If inventory is enabled, list consumables
      */
     #buildMonsterActions() {
+      this.#buildMonsterAttackList()
       this.#buildSaveList()
+      this.#buildAbilitiesList()
       this.removeGroup({ id: "inventory" })
       this.#buildSpellsList()
       this.#buildCombatUtilityActions()
@@ -103,7 +105,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
      * Build actions for multiple characters
      */
     #buildMultiCharacterActions() {
-      this.#buildExplorationSkilleList () 
+      this.#buildExplorationSkilleList()
       this.#buildAbilityCheckList()
       this.#buildSaveList()
       this.#buildCombatUtilityActions()
@@ -140,7 +142,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       this.removeGroup({ id: "spells" })
     }
 
-    #itemToAction ([itemId, itemData]) {
+    #itemToAction([itemId, itemData]) {
       const isConsumableItem = itemData.system?.quantity?.max;
       const isSpellWithMultipleMemorizations = itemData.system?.cast > 1
 
@@ -158,15 +160,15 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
       if (
         !Number.isNaN(current) && current > 1 &&
-        !Number.isNaN(max) &&  max > 1
+        !Number.isNaN(max) && max > 1
       ) {
         info = { text: `${current}/${max}` }
       }
-      
+
       return this.#toAction(itemId, itemData, 'item', info)
     }
 
-    #toAction (itemId, itemData, actionTypeId, info) {
+    #toAction(itemId, itemData, actionTypeId, info) {
       const id = itemId
       const name = itemData.name
       const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE[actionTypeId])
@@ -182,7 +184,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       return { id, name, listName, encodedValue, img, cssClass, info1 }
     }
 
-    #assignActions (type, typeMap) {
+    #assignActions(type, typeMap) {
       const groupId = ITEM_TYPE[type]?.groupId
       if (!groupId) return
       const groupData = { id: groupId, type: 'system' }
@@ -191,7 +193,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       this.addActions(actions, groupData)
     }
 
-    #buildItemList () {
+    #buildItemList() {
       const shouldDisplayUnequipped = Utils.getSetting('displayUnequipped')
       const isEqupped = (item) => item.system.equipped
       const isContained = (item) => !!item.system.containerId
@@ -203,40 +205,40 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         return map
       }
 
-      const weaponMap = this.actor.system.weapons.reduce(toMap, new Map()) 
+      const weaponMap = this.actor.system.weapons.reduce(toMap, new Map())
       const armorMap = this.actor.system.armor.reduce(toMap, new Map())
       const consumableMap = [...this.actor.system.items, ...this.actor.system.treasures]
         .filter(i => !!i.system.quantity.max && !!i.system.quantity.value)
         .reduce(toMap, new Map())
-  
+
       if (!weaponMap.size && !armorMap.size && !consumableMap.size) {
         this.removeGroup({ id: "inventory" })
       }
-      
+
       if (weaponMap.size) {
         this.addGroup(
-          {...GROUP.weapons, nestId: 'inventory_weapons'},
+          { ...GROUP.weapons, nestId: 'inventory_weapons' },
           this.groups.inventory
         )
         this.#assignActions('weapons', weaponMap)
       }
       if (armorMap.size) {
         this.addGroup(
-          {...GROUP.armor, nestId: 'inventory_armor'},
+          { ...GROUP.armor, nestId: 'inventory_armor' },
           this.groups.inventory
         )
         this.#assignActions('armor', armorMap)
       }
       if (consumableMap.size) {
         this.addGroup(
-          {...GROUP.items, nestId: 'inventory_items'},
+          { ...GROUP.items, nestId: 'inventory_items' },
           this.groups.inventory
         )
         this.#assignActions('items', consumableMap)
       }
     }
 
-    #buildContainers () {
+    #buildContainers() {
       this.actor.system.containers
         .filter(i => !!i.system.contents.length)
         .forEach((container) => {
@@ -258,7 +260,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         })
     }
 
-    #buildSheetRollAction (key, actionTypeId, nameKey) {
+    #buildSheetRollAction(key, actionTypeId, nameKey) {
       // @todo UFT translation keys
       const id = key
       const name = coreModule.api.Utils.i18n(nameKey)
@@ -269,12 +271,12 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       return { id, name, listName, encodedValue }
     }
 
-    #buildAbilityCheckList () {
+    #buildAbilityCheckList() {
       const actionKey = 'abilitycheck'
       const abilityKeys = ['str', 'int', 'wis', 'dex', 'con', 'cha']
 
       this.addGroup(
-        {...GROUP.abilitychecks, nestId: 'checks_abilitychecks'},
+        { ...GROUP.abilitychecks, nestId: 'checks_abilitychecks' },
         this.groups.checks
       )
 
@@ -288,15 +290,15 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       )
     }
 
-    #buildExplorationSkilleList () {
+    #buildExplorationSkilleList() {
       const actionKey = 'exploration'
       const abilityKeys = ['ld', 'od', 'sd', 'ft']
 
       this.addGroup(
-        {...GROUP.explorationSkills, nestId: 'abilities_exploration'},
+        { ...GROUP.explorationSkills, nestId: 'abilities_exploration' },
         this.groups.abilities
       )
-      
+
       this.addActions(
         abilityKeys.map(abilityKey => this.#buildSheetRollAction(
           abilityKey,
@@ -306,16 +308,16 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         this.groups.abilities_exploration
       )
     }
-    
-    #buildSaveList () {
+
+    #buildSaveList() {
       const actionKey = 'save'
       const abilityKeys = ['death', 'wand', 'paralysis', 'breath', 'spell']
 
       this.addGroup(
-        {...GROUP.saves, nestId: 'checks_saves', order: 1},
+        { ...GROUP.saves, nestId: 'checks_saves', order: 1 },
         this.groups.checks
       )
-      
+
       this.addActions(
         abilityKeys.map(abilityKey => this.#buildSheetRollAction(
           abilityKey,
@@ -326,7 +328,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
       )
     }
 
-    #buildAbilitiesList () {
+    #buildAbilitiesList() {
       const hasRoll = (i) => (!!i.system.roll)
       const rollable = this.actor.system.abilities.filter(hasRoll)
       const misc = this.actor.system.abilities.filter(i => !hasRoll(i))
@@ -337,7 +339,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
       if (rollable.length) {
         this.addGroup(
-          {...GROUP.rolledAbilities, nestId: 'abilities_rollable'},
+          { ...GROUP.rolledAbilities, nestId: 'abilities_rollable' },
           this.groups.abilities
         )
         this.#assignActions(
@@ -348,7 +350,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
       if (misc.length) {
         this.addGroup(
-          {...GROUP.miscAbilities, nestId: 'abilities_misc'},
+          { ...GROUP.miscAbilities, nestId: 'abilities_misc' },
           this.groups.abilities
         )
         this.#assignActions(
@@ -362,40 +364,40 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     /**
      * @todo Only add the spells group if spells exist and this actor can use spells
      */
-    #buildSpellsList () {
+    #buildSpellsList() {
       if (!this.actor.system.spells.enabled) {
-        this.removeGroup({id: "spells"})
+        this.removeGroup({ id: "spells" })
         return
       }
-      
+
       const { spellList } = this.actor.system.spells
-    
+
       for (const [level, spells] of Object.entries(spellList)) {
-        const {used, max} = this.actor.system.spells.slots[level];
+        const { used, max } = this.actor.system.spells.slots[level];
 
         // No slots memorized or available at this level? Bail.
         if (!used || !max) continue;
-        
+
         const memorizedSpells = spells.reduce((map, spell) => {
           const { memorized, cast } = spell.system
           if (memorized && cast) {
             map.set(spell.id, spell)
-          } 
+          }
           return map
         }, new Map())
 
         // No spells prepared for this level? Bail.
         // if (!memorizedSpells.size) continue
-       
+
         const levelGroup = {
           id: `spells_${level}`,
           name: game.i18n.format('tokenActionHud.uft.spells.level', { level }),
           type: 'system',
           nestId: `spells`,
           settings: { style: 'tab' },
-          info1:  `${used}/${max}`,
+          info1: `${used}/${max}`,
         }
-      
+
         this.addGroup(levelGroup, this.groups.spells)
 
         this.addActions(
@@ -406,22 +408,70 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     }
 
     /**
-     * @todo "Melee attack"
-     * @todo "Missile attack"
-     * @todo If equipped weapon, "Attack with equipped weapon"
+     *  @todo Apply color to individual attacks by routine
+     *  @todo Do full attack routine
+     *  @todo Add "number of attacks remaining in routine item" info
      */
+    #buildMonsterAttackList() {
+      const getWeapons = (i) => i.type === 'weapon'
+      const isContained = (item) => !!item.system.containerId
+      const toMap = (map, item) => {
+        if (!isContained(item)) map.set(item.id, item)
+        return map
+      }
+      const patterns = this.actor.system.attackPatterns
+
+      for (let pattern in patterns) {
+        const patternWeapons = patterns[pattern].filter(getWeapons);
+
+        if (patternWeapons.length) {
+          const patternMap = patternWeapons.reduce(toMap, new Map())
+          const patternName = pattern === 'transparent'
+            ? coreModule.api.Utils.i18n('tokenActionHud.uft.routines.unassigned')
+            : coreModule.api.Utils.i18n(`OSE.colors.${pattern}`)
+          const patternGroup = {
+            id: `routine_${pattern}`,
+            name: patternName,
+            type: 'system',
+            nestId: `routines`,
+            settings: { style: 'tab' },
+          }
+
+          this.addGroup(patternGroup, this.groups.routines)
+
+          this.addActions(
+            [...patternMap].map(this.#itemToAction.bind(this)),
+            { id: patternGroup.id, nestId: patternGroup.nestId }
+          )
+        }
+      }
+    }
+
     #buildCombatUtilityActions() {
       const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE["combat"])
       const meleeName = coreModule.api.Utils.i18n("tokenActionHud.uft.utility.melee")
       const missileName = coreModule.api.Utils.i18n("tokenActionHud.uft.utility.missile")
       const equippedName = coreModule.api.Utils.i18n("tokenActionHud.uft.utility.withEquipped")
 
+      let meleeMod = 0;
+      let rangedMod = 0;
+
+      if (this.actor.system.meleeMod > 0)
+        meleeMod = `+${this.actor.system.meleeMod}`
+      if (this.actor.system.meleeMod < 0)
+        meleeMod = this.actor.system.meleeMod;
+
+      if (this.actor.system.rangedMod > 0)
+        rangedMod = `+${this.actor.system.rangedMod}`
+      if (this.actor.system.rangedMod < 0)
+        rangedMod = this.actor.system.rangedMod;
+
       const meleeInfo = this.actor
-        ? { text: `${this.actor.system.meleeMod > 0 ? `+${this.actor.system.meleeMod}` : this.actor.system.meleeMod}, 1d6` }
+        ? { text: `${meleeMod}, 1d6` }
         : null
 
       const missileInfo = this.actor
-        ? { text: `${this.actor.system.rangedMod > 0 ? `+${this.actor.system.rangedMod}` : this.actor.system.rangedMod}, 1d6` }
+        ? { text: `${rangedMod}, 1d6` }
         : null
 
       const hasCharacter = this.actors.map(a => a.type).includes('character')
@@ -456,10 +506,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
     #buildMoraleActions() {
       const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE["morale"])
-      
+
       const moraleName = coreModule.api.Utils.i18n("tokenActionHud.uft.utility.morale")
       const loyaltyName = coreModule.api.Utils.i18n("tokenActionHud.uft.utility.loyalty")
-      const moraleAction = 
+      const moraleAction =
         (
           game.settings.get(game.system.id, 'morale') &&
           this.actors.map(a => a.type).includes('monster')
@@ -470,21 +520,21 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
           encodedValue: ["morale", "morale"].join(this.delimiter),
         } : null
       const loyaltyAction = (
-          this.actors.map(a => a.type).includes('character') &&
-          this.actors.some(a => a.system.retainer.enabled)
-        ) ? {
-          id: "loyalty",
-          name: loyaltyName,
-          listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${loyaltyName}`,
-          encodedValue: ["morale", "loyalty"].join(this.delimiter),
-        } : null
+        this.actors.map(a => a.type).includes('character') &&
+        this.actors.some(a => a.system.retainer.enabled)
+      ) ? {
+        id: "loyalty",
+        name: loyaltyName,
+        listName: `${actionTypeName ? `${actionTypeName}: ` : ''}${loyaltyName}`,
+        encodedValue: ["morale", "loyalty"].join(this.delimiter),
+      } : null
       const actions = [moraleAction, loyaltyAction].filter(i => !!i?.listName)
       this.addActions(actions, this.groups.utility_utility)
     }
-    
+
     #buildHPActions() {
       const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE["hp"])
-      
+
       const hpName = coreModule.api.Utils.i18n("tokenActionHud.uft.utility.hp")
       const hdName = coreModule.api.Utils.i18n("tokenActionHud.uft.utility.hd")
       const hpAction = (this.actors.map(a => a.type).includes('monster'))
